@@ -11,8 +11,8 @@ on:
       - uat
 
 jobs:
-  vercel:
-    name: "Deploy front-end with vercel"
+  deploy-vercel:
+    name: "deploy-vercel"
     runs-on: ${{ matrix.os }}
 
     steps:
