@@ -1,5 +1,5 @@
 # label workflow
-name: Linter
+name: Linter-vercel
 
 # executes workflows that are defined with the on key
 on:
