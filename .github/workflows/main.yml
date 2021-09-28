@@ -11,29 +11,59 @@ on:
       - uat
 
 jobs:
-  deploy-vercel:
-    name: "deploy-vercel"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  # deploy-vercel:
+  #   name: "deploy-vercel"
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest]
 
+  #   steps:
+  #     - name: Checkout git repository
+  #       uses: actions/checkout@v2
+
+  #     - name: instal dependencies
+  #       uses: actions/setup-node@v1
+
+  #     - name: "Deploy to Vercel"
+  #       run: |
+  #         prodRun=""
+  #         if [[ ${GITHUB_REF} == "refs/heads/main" ]]; then
+  #           prodRun="--prod"
+  #         fi
+
+  #         npx vercel --token ${{ secrets.vercel_token }} $prodRun
+  #       env:
+  #         VERCEL_TOKEN: ${{ secrets.vercel_token }}
+  #         VERCEL_PROJECT_ID: ${{ secrets.vercel_project_id }}
+  #         VERCEL_ORG_ID: ${{ secrets.vercel_org_id }}
+
+  deploy-react-cra:
+    name: Menjalankan Linter di React CRA
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout git repository
+      - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - name: instal dependencies
+      - name: Set up Node.js
         uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Run Test
+        run: CI=true npm run test
+
+      - name: Run Build
+        run: npm run build
 
       - name: "Deploy to Vercel"
-        run: |
-          prodRun=""
-          if [[ ${GITHUB_REF} == "refs/heads/main" ]]; then
-            prodRun="--prod"
-          fi
-
-          npx vercel --token ${{ secrets.vercel_token }} $prodRun
         env:
-          VERCEL_TOKEN: ${{ secrets.vercel_token }}
-          VERCEL_PROJECT_ID: ${{ secrets.vercel_project_id }}
-          VERCEL_ORG_ID: ${{ secrets.vercel_org_id }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+         run: |
+         npx vercel --token ${VERCEL_TOKEN} --prod
+
