@@ -1,5 +1,5 @@
 # label workflow
-name: Linter-vercel
+name: deploy vercel
 
 # executes workflows that are defined with the on key
 on:
@@ -11,24 +11,6 @@ on:
       - uat
 
 jobs:
-  run-linters:
-    name: run-linters
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-
-    # A step is a sequence of tasks
-    steps:
-      - name: Checkout git repository
-        uses: actions/checkout@v2
-
-      - name: instal dependencies
-        run: npm install
-
-      - name: run linter
-        run: npm run lint
-
   vercel:
     name: "Deploy front-end with vercel"
     runs-on: ${{ matrix.os }}
