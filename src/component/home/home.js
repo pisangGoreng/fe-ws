@@ -14,7 +14,7 @@ function HomePage({ socket }) {
 
   return (
     <div className="homepage">
-      <h1>Welcome to ChatApp</h1>
+      <h1>Welcome to ChatApp v2</h1>
       <input
         className="form-username"
         autoFocus

@@ -17,20 +17,38 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        # node: [13.x, 14.x, 15.x]
 
     # A step is a sequence of tasks
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v2
 
-      # - name: Setup node env
-      #   uses: actions/setup-node@v2.1.2
-      #   with:
-      #     node-version: ${{ matrix.node }}
-
       - name: instal dependencies
         run: npm install
 
       - name: run linter
         run: npm run lint
+
+  vercel:
+    name: "Deploy front-end with vercel"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v2
+
+      - name: instal dependencies
+        uses: actions/setup-node@v1
+
+      - name: "Deploy to Vercel"
+        run: |
+          prodRun=""
+          if [[ ${GITHUB_REF} == "refs/heads/main" ]]; then
+            prodRun="--prod"
+          fi
+
+          npx vercel --token ${VERCEL_TOKEN} $prodRun
+        env:
+          VERCEL_TOKEN: ${{ secrets.vercel_token }}
+          VERCEL_PROJECT_ID: ${{ secrets.vercel_project_id }}
+          VERCEL_ORG_ID: ${{ secrets.vercel_org_id }}

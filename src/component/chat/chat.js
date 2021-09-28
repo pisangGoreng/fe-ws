@@ -8,7 +8,6 @@ function Chat({ username, roomname, socket }) {
 
   useEffect(() => {
     socket.on("message", (data) => {
-      // dispatch(process(data.text))
       let temp = messages
       temp.push({
         userId: data.userId,
